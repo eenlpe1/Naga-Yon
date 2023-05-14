@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../screens/registerscreen.dart';
 import '../components/design_shape.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,21 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: true,
                     ),
                     const SizedBox(height: 20.0),
-                    // RaisedButton(
-                    //   onPressed: () {
-                    //     // Add your sign-in logic here
-                    //   },
-                    //   color: Colors.yellow,
-                    //   shape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.circular(5.0),
-                    //   ),
-                    //   child: Text(
-                    //     'Sign In',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
                     GestureDetector(
                       // onTap: () {
                       //   sendData();
@@ -122,12 +109,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
+                        child: const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Log In",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16.0,
+                            ),
                           ),
                         ),
                       ),
@@ -142,13 +132,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontSize: 15.0,
                             )),
                         GestureDetector(
-                          // onTap: () => Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const Register()),
-                          // ),
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const RegisterScreen()),
+                          ),
                           child: const Text(
-                            'Sign Up',
+                            'Create an Account',
                             style: TextStyle(
                               color: Color(0xFFfdc500),
                               fontWeight: FontWeight.bold,
