@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
+              color: const Color(0xFFffffff),
               elevation: 5.0,
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
@@ -109,18 +110,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     //     ),
                     //   ),
                     // ),
-                    const SizedBox(height: 5.0),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    GestureDetector(
+                      // onTap: () {
+                      //   sendData();
+                      // },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 15.0),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("Don't have an account? ",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15.0,
                             )),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
                         GestureDetector(
                           // onTap: () => Navigator.pushReplacement(
                           //   context,
@@ -130,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             'Sign Up',
                             style: TextStyle(
-                              color: Colors.green,
+                              color: Color(0xFFfdc500),
                               fontWeight: FontWeight.bold,
                               fontSize: 15.0,
                             ),
