@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Welcome, Guest!',
                       style: TextStyle(
                         fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                     const SizedBox(height: 5.0),
@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 20.0),
