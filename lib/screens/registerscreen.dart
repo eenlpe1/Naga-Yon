@@ -1,5 +1,7 @@
 import 'package:finalproject/screens/loginscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '../components/design_shape.dart';
 
@@ -11,6 +13,57 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController firstName = TextEditingController();
+  final TextEditingController lastName = TextEditingController();
+  final TextEditingController phoneNumber = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+
+  Future<void> sendData() async {
+    final response = await http.post(
+      Uri.parse('http://zz.ncf.edu.ph/public/api/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'first_name': firstName.text,
+        'last_name': lastName.text,
+        'phone_number': phoneNumber.text,
+        'email': email.text,
+        'password': password.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // Data sent successfully
+      final snackBar = SnackBar(
+        content: const Text('Your account has been successfully created'),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Login',
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      // Error sending data
+      const snackBar = SnackBar(
+        content: Text('Account already exists'),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.fixed,
+        duration: Duration(seconds: 2),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: Colors.grey,
                           fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     const Text(
                       'Create an Account',
                       style: TextStyle(
@@ -148,11 +201,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       // controller: password,
                       obscureText: true,
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 10.0),
                     GestureDetector(
-                      // onTap: () {
-                      //   sendData();
-                      // },
+                      onTap: () {
+                        sendData();
+                      },
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 15.0),
                         padding: const EdgeInsets.symmetric(
@@ -181,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const Text("Already have an Account? ",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 15.0,
+                              fontSize: 13.0,
                             )),
                         GestureDetector(
                           onTap: () => Navigator.pushReplacement(
@@ -194,7 +247,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style: TextStyle(
                               color: Color(0xFFfdc500),
                               fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
+                              fontSize: 13.0,
                             ),
                           ),
                         ),
