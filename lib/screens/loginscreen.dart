@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 5.0),
                     const Text(
-                      'Enjoy a Hassle-Free Travel!',
+                      "Enjoy a Hassle-Free Travel!",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey,
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Text("Don't have an account? ",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 15.0,
+                              fontSize: 13.0,
                             )),
                         GestureDetector(
                           onTap: () => Navigator.pushReplacement(
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               color: Color(0xFFfdc500),
                               fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
+                              fontSize: 13.0,
                             ),
                           ),
                         ),
