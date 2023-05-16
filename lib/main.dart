@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../screens/loginscreen.dart';
-import '../screens/registerscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Poppins'),
       debugShowCheckedModeBanner: false,
       title: 'My App',
-      home: const RegisterScreen(),
+      home: const LoginScreen(),
     );
   }
 }
