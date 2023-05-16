@@ -1,9 +1,9 @@
-import 'package:finalproject/screens/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../components/design_shape.dart';
+import '../screens/loginscreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -21,7 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> sendData() async {
     final response = await http.post(
-      Uri.parse('http://zz.ncf.edu.ph/public/api/register'),
+      Uri.parse(
+          'https://ncfnagayon-api.000webhostapp.com/api/nagayon/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -37,12 +38,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (response.statusCode == 200) {
       // Data sent successfully
       final snackBar = SnackBar(
-        content: const Text('Your account has been successfully created'),
+        content: const Text(
+          'Your account has been successfully created',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 10),
         action: SnackBarAction(
           label: 'Login',
+          textColor: Colors.black,
+          // Navigate to Login Screen
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -51,15 +57,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       );
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       // Error sending data
       const snackBar = SnackBar(
-        content: Text('Account already exists'),
+        content: Text(
+          'Account already exists',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
         backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.fixed,
-        duration: Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 5),
       );
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -118,7 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
+                      controller: firstName,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
@@ -138,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
+                      controller: lastName,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
@@ -158,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
+                      controller: phoneNumber,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
@@ -178,7 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
+                      controller: email,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
@@ -198,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: password,
+                      controller: password,
                       obscureText: true,
                     ),
                     const SizedBox(height: 10.0),
