@@ -17,6 +17,7 @@ Fork and Clone this repository to your local machine.
 List of dependencies included in this project:
 - [Flutter Http](https://pub.dev/packages/http)
 - [Flutter Launcher Icons](https://pub.dev/packages/flutter_launcher_icons)
+- [Flutter Convert](https://pub.dev/packages/convert) 
 
 ##  Built Using
 This mobile application was made with [Flutter](https://flutter.dev/) for ```Front-end``` and [Laravel](https://laravel.com/) for the API as the ```Back-End```.
