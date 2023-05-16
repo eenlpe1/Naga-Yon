@@ -1,263 +1,201 @@
-import 'package:finalproject/screens/loginscreen.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import '../components/design_shape.dart';
-
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
-
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+void main() {
+  runApp(Register());
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController firstName = TextEditingController();
-  final TextEditingController lastName = TextEditingController();
-  final TextEditingController phoneNumber = TextEditingController();
-  final TextEditingController email = TextEditingController();
-  final TextEditingController password = TextEditingController();
-
-  Future<void> sendData() async {
-    final response = await http.post(
-      Uri.parse('http://zz.ncf.edu.ph/public/api/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'first_name': firstName.text,
-        'last_name': lastName.text,
-        'phone_number': phoneNumber.text,
-        'email': email.text,
-        'password': password.text,
-      }),
+class Register extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Color.fromARGB(255, 1, 17, 27)),
+      home: SignUp(),
     );
+  }
+}
 
+class SignUp extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  final TextEditingController _fnameController = TextEditingController();
+  final TextEditingController _lnameController = TextEditingController();
+  final TextEditingController _phonenumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _sendData() async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/ncf/register?');
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'first_name': _fnameController.text,
+        'last_name': _lnameController.text,
+        'phone_number': _phonenumberController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
     if (response.statusCode == 200) {
       // Data sent successfully
-      final snackBar = SnackBar(
-        content: const Text('Your account has been successfully created'),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-        action: SnackBarAction(
-          label: 'Login',
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            );
-          },
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Your account has been successfully created'),
         ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       // Error sending data
-      const snackBar = SnackBar(
-        content: Text('Account already exists'),
-        backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.fixed,
-        duration: Duration(seconds: 2),
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Account already existing'),
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: CustomPaint(
-        painter: CurveShape(),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Center(
-            child: Card(
-              margin: const EdgeInsets.all(20.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign Up'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 50),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey),
               ),
-              color: const Color(0xFFffffff),
-              elevation: 5.0,
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Want to Travel with Us?",
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600),
+              child: TextField(
+                controller: _fnameController,
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                  prefixIcon: Icon(Icons.person, color: Colors.grey),
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                ),
+                cursorColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: TextField(
+                controller: _lnameController,
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                  prefixIcon: Icon(Icons.person, color: Colors.grey),
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                ),
+                cursorColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: TextField(
+                controller: _phonenumberController,
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                  prefixIcon: Icon(Icons.person, color: Colors.grey),
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                ),
+                cursorColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: Icon(Icons.email, color: Colors.grey),
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                ),
+                cursorColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey),
+              ),
+              child: TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                ),
+                obscureText: true,
+                cursorColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 15),
+            GestureDetector(
+              onTap: () {
+                _sendData();
+              },
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 209, 174, 20),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      'Create an Account',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'First Name',
-                          prefixIcon: Icon(Icons.person,
-                              color: Colors.grey, size: 20.0),
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.0,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5.0),
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'Last Name',
-                          prefixIcon: Icon(Icons.person,
-                              color: Colors.grey, size: 20.0),
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.0,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5.0),
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'Phone Number',
-                          prefixIcon:
-                              Icon(Icons.phone, color: Colors.grey, size: 20.0),
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.0,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5.0),
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon:
-                              Icon(Icons.email, color: Colors.grey, size: 20.0),
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.0,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5.0),
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon:
-                              Icon(Icons.lock, color: Colors.grey, size: 22.0),
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.0,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5.0),
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0)),
-                      // controller: password,
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 10.0),
-                    GestureDetector(
-                      onTap: () {
-                        sendData();
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 15.0),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: const Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Register",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Already have an Account? ",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13.0,
-                            )),
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                          ),
-                          child: const Text(
-                            'Log In',
-                            style: TextStyle(
-                              color: Color(0xFFfdc500),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
