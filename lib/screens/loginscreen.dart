@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '../screens/registerscreen.dart';
 import '../components/design_shape.dart';
+import '../screens/homescreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +14,55 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+
+  Future<void> sendData() async {
+    if (email.text.isEmpty || password.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Please enter Email and Password',
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://zz.ncf.edu.ph/public/api/login');
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'email': email.text,
+        'password': password.text,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    // Login successfuly
+    if (response.statusCode == 200) {
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+      // Login failed or incomplete credentials
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid email or password. Please try again.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: email,
+                      controller: email,
                     ),
                     const SizedBox(
                       height: 20,
@@ -94,14 +146,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      // controller: password,
+                      controller: password,
                       obscureText: true,
                     ),
                     const SizedBox(height: 20.0),
                     GestureDetector(
-                      // onTap: () {
-                      //   sendData();
-                      // },
+                      onTap: () {
+                        sendData();
+                      },
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 15.0),
                         padding: const EdgeInsets.symmetric(
@@ -123,7 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
