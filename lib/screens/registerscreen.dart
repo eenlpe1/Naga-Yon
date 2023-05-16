@@ -13,11 +13,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController firstName = TextEditingController();
-  final TextEditingController lastName = TextEditingController();
-  final TextEditingController phoneNumber = TextEditingController();
-  final TextEditingController email = TextEditingController();
-  final TextEditingController password = TextEditingController();
+  final firstName = TextEditingController();
+  final lastName = TextEditingController();
+  final phoneNumber = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
 
   Future<void> sendData() async {
     final response = await http.post(
@@ -238,7 +238,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
