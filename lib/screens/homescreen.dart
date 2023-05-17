@@ -1,6 +1,6 @@
-import 'dart:math';
+// ignore_for_file: sized_box_for_whitespace
 
-import 'package:finalproject/components/drawer.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,10 +8,10 @@ import 'dart:convert';
 import '../components/colors.dart';
 
 enum FilterType {
-  NameAscending,
-  NameDescending,
-  RegionCodeAscending,
-  RegionCodeDescending,
+  nameAscending,
+  nameDescending,
+  regioncodeAscending,
+  regioncodeDescending,
 }
 
 class HomeScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> originalCityData = [];
   List<dynamic> cityData = [];
-  FilterType currentFilter = FilterType.NameAscending;
+  FilterType currentFilter = FilterType.nameAscending;
 
   @override
   void initState() {
@@ -70,17 +70,17 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       currentFilter = filterType;
       switch (filterType) {
-        case FilterType.NameAscending:
+        case FilterType.nameAscending:
           cityData.sort((a, b) => (a['name'] ?? '').compareTo(b['name'] ?? ''));
           break;
-        case FilterType.NameDescending:
+        case FilterType.nameDescending:
           cityData.sort((a, b) => (b['name'] ?? '').compareTo(a['name'] ?? ''));
           break;
-        case FilterType.RegionCodeAscending:
+        case FilterType.regioncodeAscending:
           cityData.sort((a, b) =>
               (a['region_code'] ?? '').compareTo(b['region_code'] ?? ''));
           break;
-        case FilterType.RegionCodeDescending:
+        case FilterType.regioncodeDescending:
           cityData.sort((a, b) =>
               (b['region_code'] ?? '').compareTo(a['region_code'] ?? ''));
           break;
@@ -225,25 +225,25 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(city['region_code'] ?? 'N/A'),
                           ],
                         ),
-                        trailing: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF027438),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () {
-                            // Handle button press
-                          },
-                          child: const Text(
-                            'Book Now',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        // trailing: ElevatedButton(
+                        //   style: ElevatedButton.styleFrom(
+                        //     backgroundColor: const Color(0xFF027438),
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //   ),
+                        //   onPressed: () {
+                        //     // Handle button press
+                        //   },
+                        //   child: const Text(
+                        //     'Book Now',
+                        //     style: TextStyle(
+                        //       color: Colors.white,
+                        //       fontSize: 12,
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                     ),
                   );
@@ -275,28 +275,28 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               title: const Text('Name (Ascending)'),
               onTap: () {
-                filterData(FilterType.NameAscending);
+                filterData(FilterType.nameAscending);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: const Text('Name (Descending)'),
               onTap: () {
-                filterData(FilterType.NameDescending);
+                filterData(FilterType.nameDescending);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: const Text('Region Code (Ascending)'),
               onTap: () {
-                filterData(FilterType.RegionCodeAscending);
+                filterData(FilterType.regioncodeAscending);
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: const Text('Region Code (Descending)'),
               onTap: () {
-                filterData(FilterType.RegionCodeDescending);
+                filterData(FilterType.regioncodeDescending);
                 Navigator.pop(context);
               },
             ),
