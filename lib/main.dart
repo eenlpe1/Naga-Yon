@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../screens/loginscreen.dart';
+// import '../screens/loginscreen.dart';
+import '../screens/homescreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Poppins'),
       debugShowCheckedModeBanner: false,
-      title: 'My App',
-      home: const LoginScreen(),
+      title: "Naga'Yon",
+      home: const HomeScreen(),
     );
   }
 }
