@@ -1,22 +1,25 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../components/design_shape.dart';
 import 'loginscreen.dart';
 
 class BookScreen extends StatefulWidget {
+  const BookScreen({super.key});
+
   @override
   _BookScreenState createState() => _BookScreenState();
 }
 
 class _BookScreenState extends State<BookScreen> {
-  final TextEditingController firstName = TextEditingController();
-  final TextEditingController lastName = TextEditingController();
-  final TextEditingController phoneNumber = TextEditingController();
-  final TextEditingController email = TextEditingController();
-  final TextEditingController destination = TextEditingController();
-  final TextEditingController transportation = TextEditingController();
+  final firstName = TextEditingController();
+  final lastName = TextEditingController();
+  final phoneNumber = TextEditingController();
+  final email = TextEditingController();
+  final destination = TextEditingController();
+  final transportation = TextEditingController();
   TimeOfDay? selectedTime;
   DateTime? selectedDate;
 
@@ -61,11 +64,11 @@ class _BookScreenState extends State<BookScreen> {
       // Error sending data
       print('Error: ${response.statusCode}');
       print('Response body: ${response.body}');
-      final snackBar = SnackBar(
+      const snackBar = SnackBar(
         content: Text('Something went wrong. Please try again!'),
         backgroundColor: Colors.red,
         behavior: SnackBarBehavior.fixed,
-        duration: const Duration(seconds: 2),
+        duration: Duration(seconds: 2),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
@@ -102,9 +105,6 @@ class _BookScreenState extends State<BookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registration'),
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -260,7 +260,7 @@ class _BookScreenState extends State<BookScreen> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.access_time,
+                            const Icon(Icons.access_time,
                                 color: Colors.grey, size: 20.0),
                             const SizedBox(width: 10.0),
                             Expanded(
@@ -288,7 +288,7 @@ class _BookScreenState extends State<BookScreen> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.calendar_today,
+                            const Icon(Icons.calendar_today,
                                 color: Colors.grey, size: 20.0),
                             const SizedBox(width: 10.0),
                             Expanded(
