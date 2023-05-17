@@ -5,25 +5,28 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: const [
-          UserAccountsDrawerHeader(
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.account_circle,
-                color: Colors.grey,
-                size: 50,
-              ),
-            ),
-            accountName: Text("Your Name"),
-            accountEmail: Text("yourname@example.com"),
+ return Drawer(
+  child: ListView(
+    children: const [
+      UserAccountsDrawerHeader(
+        currentAccountPicture: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: Icon(
+            Icons.account_circle,
+            color: Colors.grey,
+            size: 50,
           ),
-          ListTile(),
-          // Add more drawer items as needed
-        ],
+        ),
+        accountName: Text("Your Name"),
+        accountEmail: Text("yourname@example.com"),
       ),
-    );
+      ListTile(
+        title: Text("Book Now"),
+      ),
+      // Add more drawer items as needed
+    ],
+  ),
+);
+
   }
 }
