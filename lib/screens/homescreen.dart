@@ -7,6 +7,13 @@ import 'dart:convert';
 
 import '../components/colors.dart';
 
+enum FilterType {
+  NameAscending,
+  NameDescending,
+  RegionCodeAscending,
+  RegionCodeDescending,
+}
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -18,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> originalCityData = [];
   List<dynamic> cityData = [];
+  FilterType currentFilter = FilterType.NameAscending;
 
   @override
   void initState() {
@@ -26,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchCityData() async {
-    final response = await http.get(Uri.parse('https://ph-locations-api.buonzz.com/v1/cities'));
+    final response = await http
+        .get(Uri.parse('https://ph-locations-api.buonzz.com/v1/cities'));
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       setState(() {
@@ -55,6 +64,28 @@ class _HomeScreenState extends State<HomeScreen> {
         cityData = filteredCityData;
       });
     }
+  }
+
+  void filterData(FilterType filterType) {
+    setState(() {
+      currentFilter = filterType;
+      switch (filterType) {
+        case FilterType.NameAscending:
+          cityData.sort((a, b) => (a['name'] ?? '').compareTo(b['name'] ?? ''));
+          break;
+        case FilterType.NameDescending:
+          cityData.sort((a, b) => (b['name'] ?? '').compareTo(a['name'] ?? ''));
+          break;
+        case FilterType.RegionCodeAscending:
+          cityData.sort((a, b) =>
+              (a['region_code'] ?? '').compareTo(b['region_code'] ?? ''));
+          break;
+        case FilterType.RegionCodeDescending:
+          cityData.sort((a, b) =>
+              (b['region_code'] ?? '').compareTo(a['region_code'] ?? ''));
+          break;
+      }
+    });
   }
 
   @override
@@ -119,28 +150,57 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 30),
             Container(
               width: 380,
-              child: TextField(
-                onChanged: search,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                  hintText: "Search Places",
-                  hintStyle: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 15,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onChanged: search,
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 12),
+                        hintText: "Search Places",
+                        hintStyle: TextStyle(
+                          color: Colors.grey.shade600,
+                          fontSize: 15,
+                        ),
+                        prefixIcon: const Icon(Icons.search_rounded,
+                            color: Colors.grey),
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
+                        ),
+                      ),
+                    ),
                   ),
-                  prefixIcon:
-                      const Icon(Icons.search_rounded, color: Colors.grey),
-                  fillColor: Colors.grey.shade300,
-                  filled: true,
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(color: Colors.transparent),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      _scaffoldKey.currentState?.openEndDrawer();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(0),
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade600,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.filter_list_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(color: Colors.transparent),
-                  ),
-                ),
+                ],
               ),
             ),
             Expanded(
@@ -195,7 +255,54 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      endDrawer: const CustomDrawer(),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF027438),
+              ),
+              child: Text(
+                'Filters',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Name (Ascending)'),
+              onTap: () {
+                filterData(FilterType.NameAscending);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Name (Descending)'),
+              onTap: () {
+                filterData(FilterType.NameDescending);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Region Code (Ascending)'),
+              onTap: () {
+                filterData(FilterType.RegionCodeAscending);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Region Code (Descending)'),
+              onTap: () {
+                filterData(FilterType.RegionCodeDescending);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
