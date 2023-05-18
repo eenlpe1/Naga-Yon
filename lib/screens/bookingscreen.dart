@@ -1,3 +1,4 @@
+import 'package:finalproject/screens/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,6 +9,7 @@ class BookScreen extends StatefulWidget {
   const BookScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _BookScreenState createState() => _BookScreenState();
 }
 
@@ -23,7 +25,8 @@ class _BookScreenState extends State<BookScreen> {
 
   Future<void> sendData() async {
     final response = await http.post(
-      Uri.parse('https://ncfnagayon-api.000webhostapp.com/api/nagayon/bookings/register'),
+      Uri.parse(
+          'https://ncfnagayon-api.000webhostapp.com/api/nagayon/bookings/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -35,7 +38,9 @@ class _BookScreenState extends State<BookScreen> {
         'destination': destination.text,
         'transportation': selectedTransportation,
         'time': selectedTime != null ? selectedTime!.format(context) : '',
-        'date': selectedDate != null ? selectedDate!.toIso8601String().split('T')[0] : '',
+        'date': selectedDate != null
+            ? selectedDate!.toIso8601String().split('T')[0]
+            : '',
       }),
     );
 
@@ -56,17 +61,17 @@ class _BookScreenState extends State<BookScreen> {
           },
         ),
       );
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       // Error sending data
-      print('Error: ${response.statusCode}');
-      print('Response body: ${response.body}');
       const snackBar = SnackBar(
         content: Text('Something went wrong. Please try again!'),
         backgroundColor: Colors.red,
         behavior: SnackBarBehavior.fixed,
         duration: Duration(seconds: 2),
       );
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -99,16 +104,25 @@ class _BookScreenState extends State<BookScreen> {
     }
   }
 
-  List<String> transportationOptions = ['Cebu Pacific', 'Philtranco', 'Bicol Isarog Trans', 'Penafrancia Bus', 'Cebgo', 'AirAsia Zest'];
+  List<String> transportationOptions = [
+    'Cebu Pacific',
+    'Philtranco',
+    'Bicol Isarog Trans',
+    'Penafrancia Bus',
+    'Cebgo',
+    'AirAsia Zest'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Card(
+        body: Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+            Card(
               color: const Color(0xFFffffff),
               elevation: 5.0,
               child: Padding(
@@ -116,6 +130,27 @@ class _BookScreenState extends State<BookScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Align(
+                alignment: Alignment.topLeft,
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.green,
+                  ),
+                  label: const Text(
+                    'Back',
+                    style: TextStyle(
+                      color: Colors.black, 
+                    ),
+                  ),
+                ),
+              ),
                     const Text(
                       'Want to Travel with Us?',
                       style: TextStyle(
@@ -137,7 +172,8 @@ class _BookScreenState extends State<BookScreen> {
                       controller: firstName,
                       decoration: const InputDecoration(
                         labelText: 'First Name',
-                        prefixIcon: Icon(Icons.person, color: Colors.grey, size: 20.0),
+                        prefixIcon:
+                            Icon(Icons.person, color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.0,
@@ -146,7 +182,8 @@ class _BookScreenState extends State<BookScreen> {
                           borderSide: BorderSide(color: Colors.green),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -154,7 +191,8 @@ class _BookScreenState extends State<BookScreen> {
                       controller: lastName,
                       decoration: const InputDecoration(
                         labelText: 'Last Name',
-                        prefixIcon: Icon(Icons.person, color: Colors.grey, size: 20.0),
+                        prefixIcon:
+                            Icon(Icons.person, color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.0,
@@ -163,7 +201,8 @@ class _BookScreenState extends State<BookScreen> {
                           borderSide: BorderSide(color: Colors.green),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -171,7 +210,8 @@ class _BookScreenState extends State<BookScreen> {
                       controller: phoneNumber,
                       decoration: const InputDecoration(
                         labelText: 'Phone Number',
-                        prefixIcon: Icon(Icons.phone, color: Colors.grey, size: 20.0),
+                        prefixIcon:
+                            Icon(Icons.phone, color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.0,
@@ -180,7 +220,8 @@ class _BookScreenState extends State<BookScreen> {
                           borderSide: BorderSide(color: Colors.green),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -188,7 +229,8 @@ class _BookScreenState extends State<BookScreen> {
                       controller: email,
                       decoration: const InputDecoration(
                         labelText: 'Email',
-                        prefixIcon: Icon(Icons.email, color: Colors.grey, size: 20.0),
+                        prefixIcon:
+                            Icon(Icons.email, color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.0,
@@ -197,7 +239,8 @@ class _BookScreenState extends State<BookScreen> {
                           borderSide: BorderSide(color: Colors.green),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -205,7 +248,8 @@ class _BookScreenState extends State<BookScreen> {
                       controller: destination,
                       decoration: const InputDecoration(
                         labelText: 'Destination',
-                        prefixIcon: Icon(Icons.location_on, color: Colors.grey, size: 20.0),
+                        prefixIcon: Icon(Icons.location_on,
+                            color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.0,
@@ -214,7 +258,8 @@ class _BookScreenState extends State<BookScreen> {
                           borderSide: BorderSide(color: Colors.green),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -227,7 +272,8 @@ class _BookScreenState extends State<BookScreen> {
                       },
                       decoration: const InputDecoration(
                         labelText: 'Transportation',
-                        prefixIcon: Icon(Icons.emoji_transportation_rounded, color: Colors.grey, size: 20.0),
+                        prefixIcon: Icon(Icons.emoji_transportation_rounded,
+                            color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.0,
@@ -236,7 +282,8 @@ class _BookScreenState extends State<BookScreen> {
                           borderSide: BorderSide(color: Colors.green),
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
                       ),
                       items: transportationOptions.map((String value) {
                         return DropdownMenuItem<String>(
@@ -259,11 +306,14 @@ class _BookScreenState extends State<BookScreen> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.access_time, color: Colors.grey, size: 20.0),
+                            const Icon(Icons.access_time,
+                                color: Colors.grey, size: 20.0),
                             const SizedBox(width: 10.0),
                             Expanded(
                               child: Text(
-                                selectedTime != null ? selectedTime!.format(context) : 'Select Time',
+                                selectedTime != null
+                                    ? selectedTime!.format(context)
+                                    : 'Select Time',
                               ),
                             ),
                           ],
@@ -284,11 +334,14 @@ class _BookScreenState extends State<BookScreen> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.calendar_today, color: Colors.grey, size: 20.0),
+                            const Icon(Icons.calendar_today,
+                                color: Colors.grey, size: 20.0),
                             const SizedBox(width: 10.0),
                             Expanded(
                               child: Text(
-                                selectedDate != null ? selectedDate!.toString() : 'Select Date',
+                                selectedDate != null
+                                    ? selectedDate!.toString()
+                                    : 'Select Date',
                               ),
                             ),
                           ],
@@ -302,7 +355,8 @@ class _BookScreenState extends State<BookScreen> {
                       },
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 15.0),
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(5.0),
@@ -321,9 +375,9 @@ class _BookScreenState extends State<BookScreen> {
                 ),
               ),
             ),
-          ),
+          ]),
         ),
       ),
-    );
+    ));
   }
 }
