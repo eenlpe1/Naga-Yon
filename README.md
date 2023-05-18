@@ -1,3 +1,7 @@
+<p align="center" width="100%">
+    <img src="assets\images\icon.png"  width=25% height=25%/>
+</p>
+
 # Naga'Yon: Travel and Tours Agency Flutter Application
 
 ## Table of Contents
