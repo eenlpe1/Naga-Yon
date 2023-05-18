@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'loginscreen.dart';
 
 class BookScreen extends StatefulWidget {
-  const BookScreen({super.key});
+  const BookScreen({Key? key}) : super(key: key);
 
   @override
   _BookScreenState createState() => _BookScreenState();
@@ -38,7 +38,9 @@ class _BookScreenState extends State<BookScreen> {
         'destination': destination.text,
         'transportation': transportation.text,
         'time': selectedTime != null ? selectedTime!.format(context) : '',
-        'date': selectedDate != null ? selectedDate.toString() : '',
+        'date': selectedDate != null
+            ? selectedDate!.toIso8601String().split('T')[0]
+            : '',
       }),
     );
 
@@ -59,7 +61,9 @@ class _BookScreenState extends State<BookScreen> {
           },
         ),
       );
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // ignore: duplicate_ignore
     } else {
       // Error sending data
       print('Error: ${response.statusCode}');
@@ -70,6 +74,7 @@ class _BookScreenState extends State<BookScreen> {
         behavior: SnackBarBehavior.fixed,
         duration: Duration(seconds: 2),
       );
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -88,16 +93,16 @@ class _BookScreenState extends State<BookScreen> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 1),
     );
 
-    if (pickedDate != null) {
+    if (picked != null) {
       setState(() {
-        selectedDate = pickedDate;
+        selectedDate = picked;
       });
     }
   }
@@ -233,7 +238,7 @@ class _BookScreenState extends State<BookScreen> {
                       controller: transportation,
                       decoration: const InputDecoration(
                         labelText: 'Transportation',
-                        prefixIcon: Icon(Icons.location_on,
+                        prefixIcon: Icon(Icons.emoji_transportation_rounded,
                             color: Colors.grey, size: 20.0),
                         labelStyle: TextStyle(
                           color: Colors.grey,
@@ -247,6 +252,7 @@ class _BookScreenState extends State<BookScreen> {
                             vertical: 10.0, horizontal: 10.0),
                       ),
                     ),
+                    const SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
                         _selectTime(context);
