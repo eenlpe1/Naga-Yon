@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import '../components/colors.dart';
+import '../tab/card.dart';
 
 enum FilterType {
   nameAscending,
@@ -21,16 +21,25 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> originalCityData = [];
   List<dynamic> cityData = [];
   FilterType currentFilter = FilterType.nameAscending;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
     fetchCityData();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<void> fetchCityData() async {
@@ -91,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Padding(
@@ -113,17 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     _scaffoldKey.currentState?.openEndDrawer();
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(0),
-                    width: 35,
-                    height: 35,
+                    width: 40,
+                    height: 40,
+                    margin: const EdgeInsets.only(right: 0.0),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade600,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.menu_rounded,
-                      color: Colors.white,
-                      size: 29,
+                      borderRadius: BorderRadius.circular(10.0),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/icon.png'),
+                      ),
                     ),
                   ),
                 ),
@@ -147,7 +154,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(
+              width: 10,
+              height: 20,
+            ),
             Container(
               width: 380,
               child: Row(
@@ -203,55 +213,75 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Expanded(
-              child: ListView.separated(
-                itemCount: cityData.length,
-                itemBuilder: (context, index) {
-                  final city = cityData[index];
-                  return Card(
-                    color: getRandomColor(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: ListTile(
-                        title: Text(
-                          city['name'] ?? 'N/A',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            const Text('Region Code: '),
-                            Text(city['region_code'] ?? 'N/A'),
-                          ],
-                        ),
-                        // trailing: ElevatedButton(
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: const Color(0xFF027438),
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //     ),
-                        //   ),
-                        //   onPressed: () {
-                        //     // Handle button press
-                        //   },
-                        //   child: const Text(
-                        //     'Book Now',
-                        //     style: TextStyle(
-                        //       color: Colors.white,
-                        //       fontSize: 12,
-                        //       fontWeight: FontWeight.bold,
-                        //     ),
-                        //   ),
-                        // ),
-                      ),
+            const SizedBox(width: 20),
+            TabBar(
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: 'Discover'),
+                  Tab(text: 'Cities'),
+                  Tab(text: 'Mountains'),
+                ],
+                labelColor: Colors.black, // Set the text color to black
+                indicatorColor: const Color(
+                    0xFF027438) // Set the highlight color when tapping
+                ),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.all(0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 0),
+                  child: Text(
+                    "Popular Destinations",
+                    style: TextStyle(
+                      letterSpacing: -0.5,
+                      fontSize: 24.0,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10), // Add spacing between cards
+                  ),
+                ),
               ),
             ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  DestinationCard(
+                    imageUrl: 'assets/travelSpots/Palawan.jpg',
+                    destination: 'Palawan',
+                    description: 'Paris is the capital city of France.',
+                    location: 'France',
+                  ),
+                  DestinationCard(
+                    imageUrl: 'assets/travelSpots/Boracay.jpg',
+                    destination: 'Boracay',
+                    description: 'Tokyo is the capital city of Japan.',
+                    location: 'Japan',
+                  ),
+                  DestinationCard(
+                    imageUrl: 'assets/travelSpots/Legazpi.jpg',
+                    destination: 'Legazpi',
+                    description: 'New York City is in the United States.',
+                    location: 'USA',
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: const [
+                  HomeScreen(),
+                  DestinationTab(),
+                  DestinationTab(),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -302,6 +332,84 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CityTab extends StatelessWidget {
+  const CityTab({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: const [
+        CityCard(
+          imageUrl: 'assets/images/new_york_city.jpg',
+          city: 'New York City',
+          country: 'United States',
+        ),
+        CityCard(
+          imageUrl: 'assets/images/paris.jpg',
+          city: 'Paris',
+          country: 'France',
+        ),
+        CityCard(
+          imageUrl: 'assets/images/tokyo.jpg',
+          city: 'Tokyo',
+          country: 'Japan',
+        ),
+      ],
+    );
+  }
+}
+
+class CityCard extends StatelessWidget {
+  final String imageUrl;
+  final String city;
+  final String country;
+
+  const CityCard({
+    Key? key,
+    required this.imageUrl,
+    required this.city,
+    required this.country,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            imageUrl,
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  city,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  country,
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
