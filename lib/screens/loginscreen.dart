@@ -70,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: CustomPaint(
         painter: CurveShape(),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: Center(
             child: Card(
