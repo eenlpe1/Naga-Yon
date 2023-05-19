@@ -274,14 +274,68 @@ class _HomeScreenState extends State<HomeScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  HomeScreen(),
-                  DestinationTab(),
-                  DestinationTab(),
+                  // HomeScreenx(),
+                  // DestinationTab(),
+                  // DestinationTab(),
                 ],
               ),
             ),
 
             const SizedBox(height: 20),
+
+            Expanded(
+              child: ListView.separated(
+                itemCount: cityData.length,
+                itemBuilder: (context, index) {
+                  final city = cityData[index];
+                  return Card(
+                    color: getRandomColor(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: ListTile(
+                        title: Text(
+                          city['name'] ?? 'N/A',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Row(
+                          children: [
+                            const Text('Region Code: '),
+                            Text(city['region_code'] ?? 'N/A'),
+                          ],
+                        ),
+                        trailing: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF027438),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => const BookScreen()),
+                            // );
+                          },
+                          child: const Text(
+                            'Book Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10), // Add spacing between cards
+              ),
+            ),
           ],
         ),
       ),
