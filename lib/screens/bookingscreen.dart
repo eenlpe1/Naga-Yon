@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'loginscreen.dart';
-
 class BookScreen extends StatefulWidget {
-  const BookScreen({Key? key}) : super(key: key);
+  const BookScreen({Key? key, required this.destination}) : super(key: key);
+
+  final String destination;
 
   @override
   // ignore: library_private_types_in_public_api
-  _BookScreenState createState() => _BookScreenState();
+  _BookScreenState createState() => _BookScreenState();   
 }
 
 class _BookScreenState extends State<BookScreen> {
@@ -18,10 +18,22 @@ class _BookScreenState extends State<BookScreen> {
   final lastName = TextEditingController();
   final phoneNumber = TextEditingController();
   final email = TextEditingController();
-  final destination = TextEditingController();
+  late TextEditingController destinationplan;
   String? selectedTransportation;
   TimeOfDay? selectedTime;
   DateTime? selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    destinationplan = TextEditingController(text: widget.destination);
+  }
+  @override
+  void dispose() {
+    destinationplan.dispose();
+    super.dispose();
+  }
+
 
   Future<void> sendData() async {
     final response = await http.post(
@@ -35,7 +47,7 @@ class _BookScreenState extends State<BookScreen> {
         'last_name': lastName.text,
         'phone_number': phoneNumber.text,
         'email': email.text,
-        'destination': destination.text,
+        'destinationplan': destinationplan.text,
         'transportation': selectedTransportation,
         'time': selectedTime != null ? selectedTime!.format(context) : '',
         'date': selectedDate != null
@@ -46,20 +58,12 @@ class _BookScreenState extends State<BookScreen> {
 
     if (response.statusCode == 200) {
       // Data sent successfully
-      final snackBar = SnackBar(
-        content: const Text('Your booking was created successfully'),
+
+      const snackBar = SnackBar(
+        content: Text('Your booking was created successfully'),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-        action: SnackBarAction(
-          label: 'Login',
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            );
-          },
-        ),
+        duration: Duration(seconds: 5),
       );
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -105,23 +109,24 @@ class _BookScreenState extends State<BookScreen> {
   }
 
   List<String> transportationOptions = [
-    'Cebu Pacific',
-    'Philtranco',
+    '2Go',
+    'AirAsia Zest',
     'Bicol Isarog Trans',
-    'Penafrancia Bus',
     'Cebgo',
-    'AirAsia Zest'
+    'Cebu Pacific',
+    'Penafrancia Bus',
+    'Philtranco'
   ];
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
+      body: Center(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
+          child: Column(children: [
             Card(
               color: const Color(0xFFffffff),
               elevation: 5.0,
@@ -131,26 +136,27 @@ class _BookScreenState extends State<BookScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Align(
-                alignment: Alignment.topLeft,
-                child: TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.green,
-                  ),
-                  label: const Text(
-                    'Back',
-                    style: TextStyle(
-                      color: Colors.black, 
+                      alignment: Alignment.topLeft,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.green,
+                        ),
+                        label: const Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
                     const Text(
                       'Want to Travel with Us?',
                       style: TextStyle(
@@ -245,7 +251,7 @@ class _BookScreenState extends State<BookScreen> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
-                      controller: destination,
+                      controller: destinationplan,
                       decoration: const InputDecoration(
                         labelText: 'Destination',
                         prefixIcon: Icon(Icons.location_on,
@@ -292,7 +298,7 @@ class _BookScreenState extends State<BookScreen> {
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         _selectTime(context);
@@ -320,7 +326,7 @@ class _BookScreenState extends State<BookScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         _selectDate(context);
