@@ -170,7 +170,7 @@ class DiscoverDetailsScreen extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const BookScreen(),
+                    builder: (context) => BookScreen(destination: destination),
                   ),
                 );
               },
@@ -204,7 +204,11 @@ class DiscoverTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(scrollDirection: Axis.horizontal, 
+    ThemeData(
+      scaffoldBackgroundColor: Colors.transparent,
+    );
+    return ListView(
+      scrollDirection: Axis.horizontal,
       children: const [
         DiscoverCard(
           imageUrl: 'assets/travelSpots/Intramuros.jpg',
@@ -257,7 +261,6 @@ class DiscoverTab extends StatelessWidget {
           closingTime: '7:00 PM',
         ),
       ],
-    ); 
+    );
   }
-
 }
