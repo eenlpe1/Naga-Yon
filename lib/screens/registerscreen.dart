@@ -1,9 +1,9 @@
+import 'package:finalproject/screens/loginscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../components/design_shape.dart';
-import '../screens/loginscreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -13,16 +13,15 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final firstName = TextEditingController();
-  final lastName = TextEditingController();
-  final phoneNumber = TextEditingController();
-  final email = TextEditingController();
-  final password = TextEditingController();
+  final TextEditingController firstName = TextEditingController();
+  final TextEditingController lastName = TextEditingController();
+  final TextEditingController phoneNumber = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
 
   Future<void> sendData() async {
     final response = await http.post(
-      Uri.parse(
-          'https://ncfnagayon-api.000webhostapp.com/api/nagayon/register'),
+      Uri.parse('https://ncfnagayon-api.000webhostapp.com/api/nagayon/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -38,17 +37,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (response.statusCode == 200) {
       // Data sent successfully
       final snackBar = SnackBar(
-        content: const Text(
-          'Your account has been successfully created',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
+        content: const Text('Your account has been successfully created'),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 10),
+        duration: const Duration(seconds: 5),
         action: SnackBarAction(
           label: 'Login',
-          textColor: Colors.black,
-          // Navigate to Login Screen
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -62,13 +56,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else {
       // Error sending data
       const snackBar = SnackBar(
-        content: Text(
-          'Account already exists',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
+        content: Text('Account already exists'),
         backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 5),
+        behavior: SnackBarBehavior.fixed,
+        duration: Duration(seconds: 2),
       );
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -82,6 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: CustomPaint(
         painter: CurveShape(),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: Center(
             child: Card(
@@ -113,6 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: firstName,
                       decoration: const InputDecoration(
                           labelText: 'First Name',
                           prefixIcon: Icon(Icons.person,
@@ -129,10 +122,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      controller: firstName,
+                      // controller: email,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: lastName,
                       decoration: const InputDecoration(
                           labelText: 'Last Name',
                           prefixIcon: Icon(Icons.person,
@@ -149,10 +143,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      controller: lastName,
+                      // controller: email,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      
+                      controller: phoneNumber,
                       decoration: const InputDecoration(
                           labelText: 'Phone Number',
                           prefixIcon:
@@ -169,10 +165,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      controller: phoneNumber,
+                      // controller: email,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: email,
                       decoration: const InputDecoration(
                           labelText: 'Email',
                           prefixIcon:
@@ -189,10 +186,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      controller: email,
+                      // controller: email,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: password,
                       decoration: const InputDecoration(
                           labelText: 'Password',
                           prefixIcon:
@@ -209,7 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0)),
-                      controller: password,
+                      // controller: password,
                       obscureText: true,
                     ),
                     const SizedBox(height: 10.0),
@@ -238,6 +236,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
