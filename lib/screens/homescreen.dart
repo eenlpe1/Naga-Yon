@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen>
                         hintText: "Search Places",
                         hintStyle: TextStyle(
                           color: Colors.grey.shade600,
-                          fontSize: 5,
+                          fontSize: 15,
                         ),
                         prefixIcon: const Icon(Icons.search_rounded,
                             color: Colors.grey),
