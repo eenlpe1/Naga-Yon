@@ -165,12 +165,12 @@ class CityDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16.0),
-            GestureDetector(
+             GestureDetector(
               onTap: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const BookScreen(),
+                    builder: (context) => BookScreen(destination: destination),
                   ),
                 );
               },
