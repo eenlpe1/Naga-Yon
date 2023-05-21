@@ -1,11 +1,16 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'dart:math';
+import 'package:finalproject/screens/loginscreen.dart';
+import 'package:finalproject/screens/searchscreen.dart';
+import 'package:finalproject/tab/citytab.dart';
+import 'package:finalproject/tab/parktab.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../components/colors.dart';
-import '../tab/card.dart';
+import '../tab/discover.dart';
+import 'bookingscreen.dart';
 
 enum FilterType {
   nameAscending,
@@ -40,6 +45,13 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _logout(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
   }
 
   Future<void> fetchCityData() async {
@@ -123,11 +135,11 @@ class _HomeScreenState extends State<HomeScreen>
                     _scaffoldKey.currentState?.openEndDrawer();
                   },
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 30,
+                    height: 30,
                     margin: const EdgeInsets.only(right: 0.0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(5.0),
                       image: const DecorationImage(
                         image: AssetImage('assets/images/icon.png'),
                       ),
@@ -155,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
             const SizedBox(
-              width: 10,
+              width: 5,
               height: 20,
             ),
             Container(
@@ -171,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen>
                         hintText: "Search Places",
                         hintStyle: TextStyle(
                           color: Colors.grey.shade600,
-                          fontSize: 15,
+                          fontSize: 5,
                         ),
                         prefixIcon: const Icon(Icons.search_rounded,
                             color: Colors.grey),
@@ -190,18 +202,37 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      _scaffoldKey.currentState?.openEndDrawer();
+                  const SizedBox(width: 5),
+                  PopupMenuButton<FilterType>(
+                    onSelected: (FilterType selectedFilter) {
+                      filterData(selectedFilter);
                     },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<FilterType>>[
+                      const PopupMenuItem<FilterType>(
+                        value: FilterType.nameAscending,
+                        child: Text('Name Ascending'),
+                      ),
+                      const PopupMenuItem<FilterType>(
+                        value: FilterType.nameDescending,
+                        child: Text('Name Descending'),
+                      ),
+                      const PopupMenuItem<FilterType>(
+                        value: FilterType.regioncodeAscending,
+                        child: Text('Region Code Ascending'),
+                      ),
+                      const PopupMenuItem<FilterType>(
+                        value: FilterType.regioncodeDescending,
+                        child: Text('Region Code Descending'),
+                      ),
+                    ],
                     child: Container(
                       padding: const EdgeInsets.all(0),
                       width: 35,
                       height: 35,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade600,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       child: const Icon(
                         Icons.filter_list_rounded,
@@ -214,12 +245,13 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
             const SizedBox(width: 20),
+            // TabBar
             TabBar(
                 controller: _tabController,
                 tabs: const [
                   Tab(text: 'Discover'),
-                  Tab(text: 'Cities'),
-                  Tab(text: 'Mountains'),
+                  Tab(text: 'Province'),
+                  Tab(text: 'Park'),
                 ],
                 labelColor: Colors.black, // Set the text color to black
                 indicatorColor: const Color(
@@ -233,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Padding(
                   padding: EdgeInsets.only(top: 0),
                   child: Text(
-                    "Popular Destinations",
+                    "Recommendation",
                     style: TextStyle(
                       letterSpacing: -0.5,
                       fontSize: 24.0,
@@ -244,98 +276,19 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  DestinationCard(
-                    imageUrl: 'assets/travelSpots/Palawan.jpg',
-                    destination: 'Palawan',
-                    description: 'Paris is the capital city of France.',
-                    location: 'France',
-                  ),
-                  DestinationCard(
-                    imageUrl: 'assets/travelSpots/Boracay.jpg',
-                    destination: 'Boracay',
-                    description: 'Tokyo is the capital city of Japan.',
-                    location: 'Japan',
-                  ),
-                  DestinationCard(
-                    imageUrl: 'assets/travelSpots/Legazpi.jpg',
-                    destination: 'Legazpi',
-                    description: 'New York City is in the United States.',
-                    location: 'USA',
-                  ),
-                ],
-              ),
-            ),
+            // TabBarView),
+            const SizedBox(height: 8),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  // HomeScreenx(),
-                  // DestinationTab(),
-                  // DestinationTab(),
+                  DiscoverTab(),
+                  CitiesTab(),
+                  ParkTab(),
                 ],
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            Expanded(
-              child: ListView.separated(
-                itemCount: cityData.length,
-                itemBuilder: (context, index) {
-                  final city = cityData[index];
-                  return Card(
-                    color: getRandomColor(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: ListTile(
-                        title: Text(
-                          city['name'] ?? 'N/A',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Row(
-                          children: [
-                            const Text('Region Code: '),
-                            Text(city['region_code'] ?? 'N/A'),
-                          ],
-                        ),
-                        trailing: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF027438),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () {
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => const BookScreen()),
-                            // );
-                          },
-                          child: const Text(
-                            'Book Now',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10), // Add spacing between cards
-              ),
-            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -356,114 +309,61 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
             ),
+            const SizedBox(height: 5),
             ListTile(
-              title: const Text('Name (Ascending)'),
+              leading: const Icon(
+                Icons.home,
+                size: 30.0,
+              ),
+              title: const Text('Home',style: TextStyle( fontWeight: FontWeight.bold)),
               onTap: () {
-                filterData(FilterType.nameAscending);
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
               },
             ),
+            const SizedBox(height: 5),
             ListTile(
-              title: const Text('Name (Descending)'),
+              leading: const Icon(
+                Icons.menu_book_rounded,
+                size: 30.0,
+              ),
+              title: const Text('Book',style: TextStyle( fontWeight: FontWeight.bold)),
               onTap: () {
-                filterData(FilterType.nameDescending);
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BookScreen()),
+                );
               },
             ),
+            const SizedBox(height: 5),
             ListTile(
-              title: const Text('Region Code (Ascending)'),
+              leading: const Icon(
+                Icons.search_rounded,
+                size: 30.0,
+              ),
+              title: const Text('Search', style: TextStyle( fontWeight: FontWeight.bold)),
               onTap: () {
-                filterData(FilterType.regioncodeAscending);
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchScreen()),
+                );
               },
             ),
+            const SizedBox(height: 5),
             ListTile(
-              title: const Text('Region Code (Descending)'),
+              leading: const Icon(
+                Icons.logout_outlined,
+                size: 30.0,
+              ),
+              title: const Text('Log out',style: TextStyle( fontWeight: FontWeight.bold)),
               onTap: () {
-                filterData(FilterType.regioncodeDescending);
-                Navigator.pop(context);
+                _logout(context);
               },
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CityTab extends StatelessWidget {
-  const CityTab({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        CityCard(
-          imageUrl: 'assets/images/new_york_city.jpg',
-          city: 'New York City',
-          country: 'United States',
-        ),
-        CityCard(
-          imageUrl: 'assets/images/paris.jpg',
-          city: 'Paris',
-          country: 'France',
-        ),
-        CityCard(
-          imageUrl: 'assets/images/tokyo.jpg',
-          city: 'Tokyo',
-          country: 'Japan',
-        ),
-      ],
-    );
-  }
-}
-
-class CityCard extends StatelessWidget {
-  final String imageUrl;
-  final String city;
-  final String country;
-
-  const CityCard({
-    Key? key,
-    required this.imageUrl,
-    required this.city,
-    required this.country,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            imageUrl,
-            height: 200,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  city,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  country,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
