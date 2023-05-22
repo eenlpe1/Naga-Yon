@@ -61,12 +61,12 @@ class _BookScreenState extends State<BookScreen> {
     if (response.statusCode == 200) {
       // Data sent successfully
       final snackBar = SnackBar(
-        content: const Text('Your booking was created successfully'),
+        content: const Text('You successfully created your booking'),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 5),
         action: SnackBarAction(
-          label: 'Login',
+          label: 'Login', textColor: Colors.green ,
           onPressed: () {
             Navigator.pushReplacement(
               context,
