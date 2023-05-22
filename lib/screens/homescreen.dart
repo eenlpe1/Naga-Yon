@@ -336,10 +336,14 @@ class _HomeScreenState extends State<HomeScreen>
               onTap: () {
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(
                       builder: (context) => const BookScreen(
                             destination: '',
                           )),
+=======
+                  MaterialPageRoute(builder: (context) => const BookScreen(destination: '',)),
+>>>>>>> 1bf6bde9d701beb862a7872e2c324f17309d1d04
                 );
               },
             ),

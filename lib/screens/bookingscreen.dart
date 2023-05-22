@@ -66,8 +66,12 @@ class _BookScreenState extends State<BookScreen> {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 5),
         action: SnackBarAction(
+<<<<<<< HEAD
           label: 'Login',
           textColor: Colors.green,
+=======
+          label: 'Login', textColor: Colors.green,
+>>>>>>> 1bf6bde9d701beb862a7872e2c324f17309d1d04
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -126,6 +130,7 @@ class _BookScreenState extends State<BookScreen> {
     'Cebgo',
     'PAL Express',
     'Skyjet',
+<<<<<<< HEAD
     '-- Land Transportation --',
     'Bicol Isarog Trans',
     'Cagsawa Travel and Tours',
@@ -135,6 +140,18 @@ class _BookScreenState extends State<BookScreen> {
     'Superlines Bus',
   ];
 
+=======
+
+    '-- Land Transportation --',
+    'Bicol Isarog Trans',
+    'Cagsawa Travel and Tours',
+    'Penafrancia Bus',
+    'Philtranco',
+    'Raymund Bus',
+    'Superlines Bus',
+  ];
+
+>>>>>>> 1bf6bde9d701beb862a7872e2c324f17309d1d04
   @override
   Widget build(BuildContext context) {
     return Scaffold(
