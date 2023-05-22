@@ -13,13 +13,6 @@ import 'bookingscreen.dart';
 import 'loginscreen.dart';
 import 'searchscreen.dart';
 
-enum FilterType {
-  nameAscending,
-  nameDescending,
-  regioncodeAscending,
-  regioncodeDescending,
-}
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -32,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> originalCityData = [];
   List<dynamic> cityData = [];
-  FilterType currentFilter = FilterType.nameAscending;
   late TabController _tabController;
 
   @override
@@ -86,28 +78,6 @@ class _HomeScreenState extends State<HomeScreen>
         cityData = filteredCityData;
       });
     }
-  }
-
-  void filterData(FilterType filterType) {
-    setState(() {
-      currentFilter = filterType;
-      switch (filterType) {
-        case FilterType.nameAscending:
-          cityData.sort((a, b) => (a['name'] ?? '').compareTo(b['name'] ?? ''));
-          break;
-        case FilterType.nameDescending:
-          cityData.sort((a, b) => (b['name'] ?? '').compareTo(a['name'] ?? ''));
-          break;
-        case FilterType.regioncodeAscending:
-          cityData.sort((a, b) =>
-              (a['region_code'] ?? '').compareTo(b['region_code'] ?? ''));
-          break;
-        case FilterType.regioncodeDescending:
-          cityData.sort((a, b) =>
-              (b['region_code'] ?? '').compareTo(a['region_code'] ?? ''));
-          break;
-      }
-    });
   }
 
   @override
@@ -200,45 +170,6 @@ class _HomeScreenState extends State<HomeScreen>
                           borderSide:
                               const BorderSide(color: Colors.transparent),
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  PopupMenuButton<FilterType>(
-                    onSelected: (FilterType selectedFilter) {
-                      filterData(selectedFilter);
-                    },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<FilterType>>[
-                      const PopupMenuItem<FilterType>(
-                        value: FilterType.nameAscending,
-                        child: Text('Name Ascending'),
-                      ),
-                      const PopupMenuItem<FilterType>(
-                        value: FilterType.nameDescending,
-                        child: Text('Name Descending'),
-                      ),
-                      const PopupMenuItem<FilterType>(
-                        value: FilterType.regioncodeAscending,
-                        child: Text('Region Code Ascending'),
-                      ),
-                      const PopupMenuItem<FilterType>(
-                        value: FilterType.regioncodeDescending,
-                        child: Text('Region Code Descending'),
-                      ),
-                    ],
-                    child: Container(
-                      padding: const EdgeInsets.all(0),
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade600,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: const Icon(
-                        Icons.filter_list_rounded,
-                        color: Colors.white,
-                        size: 24,
                       ),
                     ),
                   ),
