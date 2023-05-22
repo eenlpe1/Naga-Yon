@@ -61,12 +61,12 @@ class _BookScreenState extends State<BookScreen> {
     if (response.statusCode == 200) {
       // Data sent successfully
       final snackBar = SnackBar(
-        content: const Text('You successfully created your booking'),
+        content: const Text('Your booking was created successfully'),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 5),
         action: SnackBarAction(
-          label: 'Login', textColor: Colors.green ,
+          label: 'Login', textColor: Colors.green,
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -119,13 +119,19 @@ class _BookScreenState extends State<BookScreen> {
   }
 
   List<String> transportationOptions = [
-    '2Go',
+    '-- Air Transportation --',
     'AirAsia Zest',
-    'Bicol Isarog Trans',
-    'Cebgo',
     'Cebu Pacific',
+    'Cebgo',
+    'PAL Express',
+    'Skyjet',
+
+    '-- Land Transportation --',
+    'Bicol Isarog Trans',
+    'Cagsawa Travel and Tours',
     'Penafrancia Bus',
-    'Philtranco'
+    'Philtranco',
+    'Raymund Bus',
   ];
 
   @override
