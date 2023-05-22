@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'loginscreen.dart';
+
 class BookScreen extends StatefulWidget {
   const BookScreen({Key? key, required this.destination}) : super(key: key);
 
@@ -10,7 +12,7 @@ class BookScreen extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _BookScreenState createState() => _BookScreenState();   
+  _BookScreenState createState() => _BookScreenState();
 }
 
 class _BookScreenState extends State<BookScreen> {
@@ -28,12 +30,12 @@ class _BookScreenState extends State<BookScreen> {
     super.initState();
     destinationplan = TextEditingController(text: widget.destination);
   }
+
   @override
   void dispose() {
     destinationplan.dispose();
     super.dispose();
   }
-
 
   Future<void> sendData() async {
     final response = await http.post(
@@ -47,7 +49,7 @@ class _BookScreenState extends State<BookScreen> {
         'last_name': lastName.text,
         'phone_number': phoneNumber.text,
         'email': email.text,
-        'destinationplan': destinationplan.text,
+        'destination': destinationplan.text,
         'transportation': selectedTransportation,
         'time': selectedTime != null ? selectedTime!.format(context) : '',
         'date': selectedDate != null
@@ -58,12 +60,21 @@ class _BookScreenState extends State<BookScreen> {
 
     if (response.statusCode == 200) {
       // Data sent successfully
-
-      const snackBar = SnackBar(
-        content: Text('Your booking was created successfully'),
+      final snackBar = SnackBar(
+        content: const Text('Your booking was created successfully'),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 5),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: 'Login',
+          textColor: Colors.green,
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+        ),
       );
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -109,20 +120,25 @@ class _BookScreenState extends State<BookScreen> {
   }
 
   List<String> transportationOptions = [
-    '2Go',
+    '-- Air Transportation --',
     'AirAsia Zest',
-    'Bicol Isarog Trans',
-    'Cebgo',
     'Cebu Pacific',
+    'Cebgo',
+    'PAL Express',
+    'Skyjet',
+    '-- Land Transportation --',
+    'Bicol Isarog Trans',
+    'Cagsawa Travel and Tours',
     'Penafrancia Bus',
-    'Philtranco'
+    'Philtranco',
+    'Raymund Bus',
+    'Superlines Bus',
   ];
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+        body: Center(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -135,27 +151,27 @@ class _BookScreenState extends State<BookScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.topLeft,
-                      child: TextButton.icon(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.green,
-                        ),
-                        label: const Text(
-                          'Back',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
+                      // child: TextButton.icon(
+                      //   onPressed: () {
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => const HomeScreen()),
+                      //     );
+                      //   },
+                      //   icon: const Icon(
+                      //     Icons.arrow_back,
+                      //     color: Colors.green,
+                      //   ),
+                      //   label: const Text(
+                      //     'Back',
+                      //     style: TextStyle(
+                      //       color: Colors.black,
+                      //     ),
+                      //   ),
+                      // ),
                     ),
                     const Text(
                       'Want to Travel with Us?',
@@ -346,7 +362,9 @@ class _BookScreenState extends State<BookScreen> {
                             Expanded(
                               child: Text(
                                 selectedDate != null
-                                    ? selectedDate!.toString()
+                                    ? selectedDate!
+                                        .toIso8601String()
+                                        .split('T')[0]
                                     : 'Select Date',
                               ),
                             ),
