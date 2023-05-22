@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen>
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 50, 16, 0),
+        padding: const EdgeInsets.fromLTRB(16, 50, 13, 0),
         child: Column(
           children: [
             Row(
@@ -106,8 +106,8 @@ class _HomeScreenState extends State<HomeScreen>
                     _scaffoldKey.currentState?.openEndDrawer();
                   },
                   child: Container(
-                    width: 30,
-                    height: 30,
+                    width: 40,
+                    height: 40,
                     margin: const EdgeInsets.only(right: 0.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.0),
@@ -228,16 +228,18 @@ class _HomeScreenState extends State<HomeScreen>
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF027438),
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/icon.png'),
+                  fit: BoxFit.cover,
+                  opacity: 0.8,
+                ),
               ),
-              child: Text(
-                'Filters',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              child: DrawerHeader(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [],
                 ),
               ),
             ),
