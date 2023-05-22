@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       const snackBar = SnackBar(
         content: Text('Account already exists'),
         backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.fixed,
+        behavior: SnackBarBehavior.floating,
         duration: Duration(seconds: 2),
       );
       // ignore: use_build_context_synchronously
