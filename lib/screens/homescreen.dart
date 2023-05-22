@@ -1,16 +1,17 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'dart:math';
-import 'package:finalproject/screens/loginscreen.dart';
-import 'package:finalproject/screens/searchscreen.dart';
-import 'package:finalproject/tab/citytab.dart';
-import 'package:finalproject/tab/parktab.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 import '../components/colors.dart';
 import '../tab/discover.dart';
+import '../tab/parktab.dart';
+import '../tab/province.dart';
 import 'bookingscreen.dart';
+import 'loginscreen.dart';
+import 'searchscreen.dart';
 
 enum FilterType {
   nameAscending,
@@ -315,7 +316,8 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.home,
                 size: 30.0,
               ),
-              title: const Text('Home',style: TextStyle( fontWeight: FontWeight.bold)),
+              title: const Text('Home',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -329,11 +331,15 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.menu_book_rounded,
                 size: 30.0,
               ),
-              title: const Text('Book',style: TextStyle( fontWeight: FontWeight.bold)),
+              title: const Text('Book',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BookScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const BookScreen(
+                            destination: '',
+                          )),
                 );
               },
             ),
@@ -343,7 +349,8 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.search_rounded,
                 size: 30.0,
               ),
-              title: const Text('Search', style: TextStyle( fontWeight: FontWeight.bold)),
+              title: const Text('Search',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -357,7 +364,8 @@ class _HomeScreenState extends State<HomeScreen>
                 Icons.logout_outlined,
                 size: 30.0,
               ),
-              title: const Text('Log out',style: TextStyle( fontWeight: FontWeight.bold)),
+              title: const Text('Log out',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               onTap: () {
                 _logout(context);
               },
