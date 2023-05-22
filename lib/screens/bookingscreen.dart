@@ -132,6 +132,7 @@ class _BookScreenState extends State<BookScreen> {
     'Penafrancia Bus',
     'Philtranco',
     'Raymund Bus',
+    'Superlines Bus',
   ];
 
   @override
