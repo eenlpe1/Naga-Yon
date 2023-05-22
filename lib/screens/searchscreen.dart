@@ -322,7 +322,7 @@ class _SearchScreenState extends State<SearchScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BookScreen()),
+                  MaterialPageRoute(builder: (context) => const BookScreen(destination: '',)),
                 );
               },
             ),
