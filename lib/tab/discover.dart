@@ -101,7 +101,6 @@ class DiscoverDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, // Make the app bar extend behind the body
       appBar: AppBar(
         title: Text(
           destination,

@@ -181,9 +181,7 @@ class ParkDetailsScreen extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const BookScreen(
-                      destination: '',
-                    ),
+                    builder: (context) => BookScreen(destination: destination),
                   ),
                 );
               },
