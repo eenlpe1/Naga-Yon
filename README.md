@@ -10,7 +10,7 @@
 + [Built Using](#built-using)
 
 ## About <a name = "about"></a>
-Naga'Yon App is a flutter based mobile application for that can place a booking for a customer and manage the user account by the admin with custom ```API```. This project is requirement for our ```Mobile Development Subject```.
+Naga'Yon App is a flutter based mobile application that can place a booking for a customer and manage the user account by the admin with custom ```API```. This project is a requirement for our ```Mobile Development Subject```.
 
 ## Prerequisites <a name = "prerequisites"></a>
 Fork and Clone this repository to your local machine.
